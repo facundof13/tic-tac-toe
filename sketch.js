@@ -1,12 +1,13 @@
-var board;
-var counter = 0;
-var boardArray = [
-[0, 0, 0, ],
-[0, 0, 0, ],
-[0, 0, 0, ]
+//initiate variables
+let board;
+let counter = 0;
+let boardArray = [
+    [0, 0, 0, ],
+    [0, 0, 0, ],
+    [0, 0, 0, ]
 ];
-var gameOver = false;
-var scoreKeeper;
+let gameOver = false;
+let scoreKeeper;
 
 function setup() {
     createCanvas(500, 300);
@@ -18,28 +19,30 @@ function setup() {
 
 function draw() {
 
+    //show board and scorekeeper
     board.show();
     scoreKeeper.show();
 
-    var currentTurn = (counter % 2) + 1;
+    //alternate current turn
+    let currentTurn = (counter % 2) + 1;
     fill(0);
     noStroke();
     rect(350, 165, 120, 40);
 
+    //Print current player's turn
     fill(255);
-    if(currentTurn == 1)
+    if (currentTurn == 1)
         text("X\'s turn", 354, 200);
-    else if (currentTurn == 2) 
-    {
+    else if (currentTurn == 2) {
         text("O\'s turn", 354, 200);
     }
 
-    
+
 
     //restart game logic
     if (board.checkWinner(1) == true || board.checkWinner(2) == true || board.checkFull() == true) {
         gameOver = true;
-        scoreKeeper.showWinner(); 
+        scoreKeeper.showWinner();
 
         scoreKeeper.update();
         board.emptyBoard();
@@ -91,9 +94,10 @@ function mouseReleased() {
     }
 }
 
-this.Board = function() {
+//setup Board class
+this.Board = function () {
 
-    this.dropPiece = function(x, y) {
+    this.dropPiece = function (x, y) {
         if (counter % 2 == 0) {
             counter++;
             strokeWeight(3);
@@ -111,11 +115,11 @@ this.Board = function() {
         }
     }
 
-    this.checkWinner = function(piece) {
+    this.checkWinner = function (piece) {
         //check for winner in all 8 possible combinations
-        var i = 0;
-        var j = 0;
-        var returnValue = false;
+        let i = 0;
+        let j = 0;
+        let returnValue = false;
 
         //horizontal win check
         if ((boardArray[i][j] == piece && boardArray[i][j + 1] == piece && boardArray[i][j + 2] == piece) ||
@@ -140,21 +144,20 @@ this.Board = function() {
         return returnValue;
     }
 
-    this.whoWon = function() {
+    this.whoWon = function () {
         if (this.checkWinner(1) == true) {
             return 1;
             //x is 1
-        }
-        else if (this.checkWinner(2) == true) {
+        } else if (this.checkWinner(2) == true) {
             return 2;
             //o is 2
         }
     }
 
 
-    this.checkFull = function() {
-        for (var i = 0; i < boardArray.length; i++) {
-            for (var j = 0; j < boardArray[i].length; j++) {
+    this.checkFull = function () {
+        for (let i = 0; i < boardArray.length; i++) {
+            for (let j = 0; j < boardArray[i].length; j++) {
                 if (boardArray[i][j] == 0) {
                     return false;
                 }
@@ -163,7 +166,7 @@ this.Board = function() {
         return true;
     }
 
-    this.show = function() {
+    this.show = function () {
         strokeWeight(4);
         stroke(255);
         line(300, 100, 0, 100);
@@ -172,20 +175,20 @@ this.Board = function() {
         line(200, 300, 200, 0);
     }
 
-    this.emptyBoard = function() {
-        for (var i = 0; i < boardArray.length; i++) {
-            for (var j = 0; j < boardArray[i].length; j++) {
+    this.emptyBoard = function () {
+        for (let i = 0; i < boardArray.length; i++) {
+            for (let j = 0; j < boardArray[i].length; j++) {
                 boardArray[i][j] = 0;
             }
         }
     }
 }
 
-this.ScoreKeeper = function() {
+this.ScoreKeeper = function () {
     this.xWins = 0;
     this.oWins = 0;
 
-    this.show = function() {
+    this.show = function () {
         textSize(32);
         stroke(1);
         fill(255);
@@ -194,37 +197,29 @@ this.ScoreKeeper = function() {
     }
 
     //call update before resetting board
-    this.update = function() {
+    this.update = function () {
         fill(0);
         stroke(0);
         rect(345, 18, 150, 90);
 
-        if (board.checkWinner(1) == true) 
-        {
+        if (board.checkWinner(1) == true) {
             scoreKeeper.xWins += 1;
-        }
-        else if (board.checkWinner(2) == true) 
-        {
+        } else if (board.checkWinner(2) == true) {
             scoreKeeper.oWins += 1;
         }
-
-
-
-        
-
 
         fill(255);
         text("X Wins: " + this.xWins, 350, 45);
         text("O Wins: " + this.oWins, 348, 80);
     }
 
-    this.showWinner = function() {
-       textSize(32);
-       if (board.checkWinner(1) == true)
-        text("X wins!", 354, 150);
-    else if (board.checkWinner(2) == true) 
-        text("O wins!", 354, 150);
-    else
-        text("Tie!", 354, 150);
-}
+    this.showWinner = function () {
+        textSize(32);
+        if (board.checkWinner(1) == true)
+            text("X wins!", 354, 150);
+        else if (board.checkWinner(2) == true)
+            text("O wins!", 354, 150);
+        else
+            text("Tie!", 354, 150);
+    }
 }
